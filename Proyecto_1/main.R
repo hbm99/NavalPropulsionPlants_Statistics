@@ -2,7 +2,7 @@ library(EnvStats)
 
 
 data <- read.table(file.choose(), header = TRUE)
-d <- read.csv(header = T)
+# d <- read.csv(header = T)
 
 
 # Estadísticos descriptivos de las variables
@@ -28,8 +28,12 @@ Graficos("Fuel Flow ", "Values", data$Fuel.flow..mf...kg.s..)
 Graficos("GT Compressor decay state coefficient ", "Values", data$GT.Compressor.decay.state.coefficient.)
 Graficos("GT Turbine decay state coefficient ", "Values", data$GT.Turbine.decay.state.coefficient)
 
-# 2) No, la varianza del flujo de combustible es de 0.257182507672931 kg/s, que es menor que 1 kg/s.
+# 2)
 
+print(paste("Prueba de Hipótesis para varianza "))
+require(stests)
+res <- stests::var.test(x = data$Fuel.flow..mf...kg.s.., alternative = "two.sided")
+res$conf.int
 
 MediaAritmetica <- function(x) 
 {
@@ -83,8 +87,6 @@ Quartiles <- function(x)
   quantile(x)
 }
 
-
-
 IntervaloDeConfianzaMedia <- function(text, x)
 {
   nivel_confianza = 0.95
@@ -93,7 +95,7 @@ IntervaloDeConfianzaMedia <- function(text, x)
   desv <- DesviacionEstandar(x) # La desviación estándar
   
   error.est <- desv/sqrt(n) # Calculamos el error estándar
-  margen.error <- 1.644854 * error.est # nivel de confianza de 90% 
+  margen.error <- 1.644854 * error.est # nivel de confianza de 95% 
   
   lim.inf <- media - margen.error # Límite inferior del intervalo
   lim.sup <- media + margen.error # Límite superior del intervalo
